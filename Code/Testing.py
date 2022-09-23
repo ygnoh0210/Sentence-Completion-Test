@@ -12,7 +12,7 @@ targets=['Mother', 'Father', 'Family', 'Female', 'Male', 'Marriage', 'Friend', '
 
 def survey_load():
     global q_list
-    q_list=pd.read_excel('../Data/Survey_List.xlsx')
+    q_list=pd.read_excel('../Data/Survey_List.xlsx', engine='openpyxl')
 
 user_result=dict()
 user_result['name']="노여경"
