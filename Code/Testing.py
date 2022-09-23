@@ -7,6 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 a_list=[]
+a_full_list=[]
 targets=['Mother', 'Father', 'Family', 'Female', 'Male', 'Marriage', 'Friend', 'Authority', 'Fear', 'Guilty', 'SelfAbility', 'Past', 'Future', 'Goal']
 
 
@@ -15,7 +16,7 @@ def survey_load():
     q_list=pd.read_excel('../Data/Survey_List.xlsx', engine='openpyxl')
 
 user_result=dict()
-user_result['name']="노여경"
+user_result['name']="YGN"
 user_result["number"]="01"
 
 
@@ -25,6 +26,7 @@ survey_load()
 for i, question in enumerate(q_list['Question']):
     answer=input("Q"+str(i+1)+":"+question)
     a_list.append(" "+answer)
+
 
 q_list['Answer']=a_list
 

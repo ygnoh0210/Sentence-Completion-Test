@@ -2,6 +2,7 @@ from multilabel_pipeline import MultiLabelPipeline
 from transformers import ElectraTokenizer
 from model import ElectraForMultiLabelClassification
 from pprint import pprint
+import pandas as pd
 
 
 tokenizer = ElectraTokenizer.from_pretrained("monologg/koelectra-base-v3-goemotions")
@@ -13,16 +14,37 @@ goemotions = MultiLabelPipeline(
     threshold=0.3
 )
 
-texts = [
-    "전혀 재미 있지 않습니다 ...",
-    "나는 “지금 가장 큰 두려움은 내 상자 안에 사는 것” 이라고 말했다.",
-    "곱창... 한시간반 기다릴 맛은 아님!",
-    "애정하는 공간을 애정하는 사람들로 채울때",
-    "너무 좋아",
-    "딥러닝을 짝사랑중인 학생입니다!",
-    "마음이 급해진다.",
-    "아니 진짜 다들 미쳤나봨ㅋㅋㅋ",
-    "개노잼"
-]
+def survey_load(path):
+    global s_result
+    s_result=pd.read_excel('../../Data/User_Raw_Data/'+path+'.xlsx', engine='openpyxl')
 
-pprint(goemotions(texts))
+user_config="YGN01"
+survey_load(user_config)
+
+def result_adding(target, content):
+    temp=goemotions(content)
+    labels=[]
+    scores=[]
+    for senti in temp:
+        labels.append(senti['labels'])
+        scores.append(senti['scores'])
+    s_result[target+'label']=labels
+    s_result[target+'score']=scores
+
+answer_list=s_result['Answer'].tolist()
+question_list=s_result['Question'].tolist()
+full_list=[]
+for i in range(len(answer_list)):
+    full_list.append(str(answer_list[i]+question_list[i]))
+
+
+result_adding('Question', question_list)
+result_adding('Answer', answer_list)
+result_adding('Full', full_list)
+
+    
+writer=pd.ExcelWriter('../../Data/User_Raw_Data/'+user_config+'_senti_result_v3.xlsx', engine='openpyxl')
+s_result.to_excel(writer, "Result")
+writer.close()
+
+# pprint(goemotions(texts))
