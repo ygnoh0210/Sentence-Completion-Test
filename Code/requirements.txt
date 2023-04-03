@@ -71,7 +71,6 @@ smart-open==6.0.0
 SoundFile==0.10.3.post1
 soynlp==0.0.493
 tables==3.7.0
-threadpoolctl==3.0.0
 tokenizers==0.9.3
 torch==1.7.1
 tqdm==4.64.0
